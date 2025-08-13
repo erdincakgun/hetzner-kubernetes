@@ -17,3 +17,20 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::211125728403:role/HetznerKubernetesGithubActionsRole
           aws-region: eu-central-1
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Terragrunt and OpenTofu
+        uses: gruntwork-io/terragrunt-action@v3
+
+      - name: Run terragrunt plan
+        run: |
+          cd live/
+          terragrunt plan
+
+      - name: Run terragrunt apply
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cd live/
+          terragrunt run --all --non-interactive apply
