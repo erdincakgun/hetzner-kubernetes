@@ -32,12 +32,6 @@ generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-variable "hcloud_token" {
-  sensitive = true
-}
-
-provider "hcloud" {
-  token = var.hcloud_token
-}
+provider "hcloud" {}
 EOF
 }
