@@ -1,0 +1,19 @@
+permissions:
+  id-token: write
+
+name: IaC
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terragrunt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@main
+        with:
+          role-to-assume: arn:aws:iam::211125728403:role/HetznerKubernetesGithubActionsRole
+          aws-region: eu-central-1
