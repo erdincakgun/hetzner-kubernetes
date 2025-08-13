@@ -28,9 +28,13 @@ jobs:
         run: |
           cd live/
           terragrunt plan
+        env:
+          HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
 
       - name: Run terragrunt apply
         if: github.ref == 'refs/heads/main'
         run: |
           cd live/
           terragrunt run --all --non-interactive apply
+        env:
+          HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
