@@ -11,6 +11,14 @@ terraform {
   source = "tfr://registry.terraform.io/terraform-hetzner-modules/server/hetzner?version=1.0.0"
 }
 
+dependency "private-network" {
+  config_path = "../private-network"
+
+  mock_outputs = {
+    id = "fake-private-network-id"
+  }
+}
+
 inputs = {
   image    = "ubuntu-22.04",
   name     = "${basename(get_terragrunt_dir())}"
@@ -20,4 +28,5 @@ inputs = {
     ipv4_enabled = true
     ipv6_enabled = true
   }
+  private_network = "${dependency.private-network.outputs.id}"
 }

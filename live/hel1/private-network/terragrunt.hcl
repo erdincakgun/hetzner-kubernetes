@@ -15,4 +15,20 @@ inputs = {
   name     = "${basename(get_terragrunt_dir())}"
   location = "${local.region}"
   ip_range = "10.0.0.0/16"
+  subnets = {
+    public-subnet = {
+      ip_range = "10.0.0.0/24"
+      type     = "cloud"
+    }
+    private-subnet = {
+      ip_range = "10.0.1.0/24"
+      type     = "cloud"
+    }
+  }
+  routes = {
+    route-first = {
+      destination = "0.0.0.0/0"
+      gateway     = "10.0.0.2"
+    }
+  }
 }
