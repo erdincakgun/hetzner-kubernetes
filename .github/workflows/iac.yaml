@@ -27,7 +27,7 @@ jobs:
       - name: Run terragrunt plan
         run: |
           cd live/
-          terragrunt plan
+          terragrunt run --all plan
         env:
           HCLOUD_TOKEN: ${{ secrets.HCLOUD_TOKEN }}
 

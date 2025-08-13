@@ -13,8 +13,8 @@ terraform {
 EOF
 }
 
-generate "provider" {
-  path      = "provider.tf"
+generate "versions" {
+  path      = "versions.tf"
   if_exists = "overwrite"
   contents  = <<EOF
 terraform {
@@ -25,7 +25,13 @@ terraform {
     }
   }
 }
+EOF
+}
 
+generate "provider" {
+  path      = "provider.tf"
+  if_exists = "overwrite_terragrunt"
+  contents  = <<EOF
 variable "hcloud_token" {
   sensitive = true
 }
