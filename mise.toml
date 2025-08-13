@@ -1,3 +1,4 @@
 [tools]
 terragrunt = "0.83.2"
 opentofu = "1.10.5"
+terraform = "1.12.2"
