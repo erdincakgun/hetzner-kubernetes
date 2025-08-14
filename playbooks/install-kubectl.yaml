@@ -1,0 +1,11 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Download kubectl and set permissions
+      ansible.builtin.get_url:
+        url: "https://dl.k8s.io/release/v{{ kubernetes_version }}/bin/linux/{{ architecture }}/kubectl"
+        dest: /usr/local/bin/kubectl
+        owner: root
+        group: root
+        mode: "0755"
+        force: yes
