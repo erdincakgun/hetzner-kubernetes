@@ -1,0 +1,44 @@
+- hosts: all
+  become: true
+  tasks:
+    - name: Run the equivalent of "apt-get update" as a separate step - 1
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: Install a list of packages - 1
+      ansible.builtin.apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gpg
+    - name: Create /etc/apt/keyrings directory with 755 permissions
+      ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+    - name: Download Kubernetes apt key and save as GPG
+      ansible.builtin.shell: |
+        curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.33/deb/Release.key \
+        | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      args:
+        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    - name: Add Kubernetes apt repository
+      ansible.builtin.copy:
+        dest: /etc/apt/sources.list.d/kubernetes.list
+        content: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.33/deb/ /"
+        owner: root
+        group: root
+        mode: "0644"
+    - name: Run the equivalent of "apt-get update" as a separate step - 2
+      ansible.builtin.apt:
+        update_cache: yes
+    - name: Install a list of packages - 2
+      ansible.builtin.apt:
+        pkg:
+          - kubelet
+          - kubeadm
+    - name: Download Kubernetes apt key and save as GPG
+      ansible.builtin.shell: |
+        sudo apt-mark hold kubelet kubeadm
